@@ -1,0 +1,55 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+export class Search extends Component {
+  //component state of form
+  state = {
+    text: '',
+  };
+
+  //porptypes
+  static propTypes = {
+    searchUsers: PropTypes.func.isRequired,
+    clearUsers: PropTypes.func.isRequired,
+    showClear: PropTypes.bool.isRequired,
+  };
+
+  //triger which seach btn is clicked
+  onSubmit = (e) => {
+    e.preventDefault();
+    this.props.searchUsers(this.state.text);
+    this.setState({ text: '' });
+  };
+
+  //triger while search operation takes place
+  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+
+  render() {
+    const { showClear, clearUsers } = this.props;
+    return (
+      <div>
+        <form onSubmit={this.onSubmit} className='form'>
+          <input
+            type='text'
+            name='text'
+            placeholder='Search Users...'
+            value={this.state.text}
+            onChange={this.onChange}
+          ></input>
+          <input
+            type='submit'
+            value='Search'
+            className='btn btn-dark btn-block'
+          ></input>
+        </form>
+        {showClear && (
+          <button className='btn btn-light btn-block' onClick={clearUsers}>
+            Clear
+          </button>
+        )}
+      </div>
+    );
+  }
+}
+
+export default Search;
