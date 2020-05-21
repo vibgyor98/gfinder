@@ -1,37 +1,40 @@
 import React, { useEffect, Fragment, useContext } from 'react';
+import { Link } from 'react-router-dom';
+
 import Spinner from '../layout/Spinner';
 import Repos from '../repos/Repos';
-import { Link } from 'react-router-dom';
 import GithubContext from '../../context/github/githubContext';
+import { getUserAndRepos } from '../../context/github/actions';
+import { GET_USER_AND_REPOS, SET_LOADING } from '../../context/types';
 
-const User = ({ match }) => {
-  //GithubContext
-  const githubContext = useContext(GithubContext);
-  const { loading, getUser, user, repos, getUserRepos } = githubContext;
-
-  //Alternate of Componentdivmount
-  useEffect(() => {
-    getUser(match.params.login);
-    getUserRepos(match.params.login);
-    //eslint-disable-next-line
-  }, []);
-
-  //Github profile feature
+const User = ({ match: { params } }) => {
   const {
-    name,
-    company,
-    avatar_url,
-    location,
-    bio,
-    blog,
-    login,
-    html_url,
-    followers,
-    following,
-    public_repos,
-    public_gists,
-    hireable,
-  } = user;
+    user: {
+      name,
+      avatar_url,
+      location,
+      bio,
+      login,
+      html_url,
+      followers,
+      following,
+      public_gists,
+      public_repos,
+      hireable,
+      blog,
+      company,
+    },
+    loading,
+    dispatch,
+    repos,
+  } = useContext(GithubContext);
+
+  useEffect(() => {
+    dispatch({ type: SET_LOADING });
+    getUserAndRepos(params.login).then((res) =>
+      dispatch({ type: GET_USER_AND_REPOS, payload: res })
+    );
+  }, [dispatch, params.login]);
 
   //loading spinner
   if (loading) return <Spinner />;
@@ -51,8 +54,8 @@ const User = ({ match }) => {
         <div className='all-center'>
           <img
             src={avatar_url}
-            className='round-img'
             alt=''
+            className='round-img'
             style={{ width: '150px' }}
           />
           <h1>{name}</h1>
@@ -72,21 +75,23 @@ const User = ({ match }) => {
             <li>
               {login && (
                 <Fragment>
-                  <strong>Username: </strong> {login}
+                  <strong>Username: {login} </strong>
                 </Fragment>
               )}
             </li>
             <li>
               {company && (
                 <Fragment>
-                  <strong>Company: </strong> {company}
+                  <strong>Company: {company} </strong>
                 </Fragment>
               )}
             </li>
             <li>
               {blog && (
                 <Fragment>
-                  <strong>Website: </strong> {blog}
+                  <strong>
+                    Website: <a href={`https://${blog}`}>{blog}</a>{' '}
+                  </strong>
                 </Fragment>
               )}
             </li>
