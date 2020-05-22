@@ -2,12 +2,11 @@
 
 /* Global Styles */
 :root {
-  --primary-color: #dc3545;
+  --primary-color: #4863a0;
   --dark-color: #333333;
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
   --success-color: #28a745;
-  --steel-color: #4863a0;
 }
 
 * {
@@ -115,6 +114,8 @@ img {
   padding: 1rem;
   border: #ccc 1px dotted;
   margin: 0.7rem 0;
+  text-align: center;
+  justify-content: center;
 }
 
 /* List */
@@ -181,18 +182,24 @@ img {
 /* Grid */
 .grid-2 {
   display: grid;
+  text-align: center;
+  justify-content: center;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 1rem;
 }
 
 .grid-3 {
   display: grid;
+  text-align: center;
+  justify-content: center;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
 }
 
 .grid-4 {
   display: grid;
+  text-align: center;
+  justify-content: center;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 1rem;
 }
@@ -378,15 +385,21 @@ table th {
 }
 
 /* Mobile Styles */
-@media (max-width: 700px) {
+@media (max-width: 600px) {
   .hide-sm {
     display: none;
   }
 
   .grid-2,
-  .grid-3,
+  .grid-3 {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-content: center;
+  }
   .grid-4 {
     grid-template-columns: 1fr;
+    text-align: center;
+    justify-content: center;
   }
 
   /* Text Styles */
